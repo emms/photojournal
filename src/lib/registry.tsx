@@ -2,7 +2,13 @@
 
 import React, { useState } from "react";
 import { useServerInsertedHTML } from "next/navigation";
-import { ServerStyleSheet, StyleSheetManager } from "styled-components";
+import {
+  ServerStyleSheet,
+  StyleSheetManager,
+  ThemeProvider,
+} from "styled-components";
+import theme from "@/styles/theme";
+import GlobalStyle from "@/styles/globalStyle";
 
 export default function StyledComponentsRegistry({
   children,
@@ -19,11 +25,20 @@ export default function StyledComponentsRegistry({
     return <>{styles}</>;
   });
 
-  if (typeof window !== "undefined") return <>{children}</>;
+  if (typeof window !== "undefined")
+    return (
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        {children}
+      </ThemeProvider>
+    );
 
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
-      {children}
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        {children}
+      </ThemeProvider>
     </StyleSheetManager>
   );
 }

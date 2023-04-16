@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { fetchContent } from "@/utils/contentful";
+import CoverImage from "./components/CoverImage";
 
 const homeQuery = `
     query HomeQuery {
@@ -27,15 +27,11 @@ export default async function Home() {
   const latestBlogPost = response.blogPostCollection?.items?.[0];
 
   return (
-    <main>
+    <>
       <h1>Photojournal</h1>
-      <Image
-        src={latestBlogPost?.coverImage?.url}
-        alt="Picture of the author"
-        width={latestBlogPost?.coverImage?.width}
-        height={latestBlogPost?.coverImage?.height}
-        priority
-      />
-    </main>
+      {latestBlogPost?.coverImage && (
+        <CoverImage coverImage={latestBlogPost.coverImage} />
+      )}
+    </>
   );
 }
